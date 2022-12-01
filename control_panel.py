@@ -49,7 +49,6 @@ class WebsocketWorker(QRunnable):
     @Slot()
     def run(self):
         self.ws.run_forever()
-        print('>>>>>>s')
         if self.is_killed:
             return
 
@@ -121,7 +120,7 @@ class MainWindow(QMainWindow):
         self.threadpool = QThreadPool()
 
     def closeEvent(self, event):
-        print('>>> close')
+        print('>>> window close')
         self.threadpool.start(self.ws_worker_kill)
 
 
@@ -212,13 +211,13 @@ class MainWindow(QMainWindow):
             self.connect_button.setText('Connect')
 
     def show_dialog(self, title, text):
-        dialog = QMessageBox(self)
-        dialog.setWindowTitle(title)
-        dialog.setText(text)
-        button = dialog.exec()
-        if button == QMessageBox.Ok:
-            print("OK!")
-
+        if self.isVisible():
+            dialog = QMessageBox(self)
+            dialog.setWindowTitle(title)
+            dialog.setText(text)
+            button = dialog.exec()
+            if button == QMessageBox.Ok:
+                print("OK!")
 
 
     ##
